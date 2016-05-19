@@ -4,8 +4,8 @@
 
 	$host = "localhost";
 	$username = "root";
-	$password = "";
-	$databaseName = "Product-1";
+	$password = "tuntuntun";
+	$databaseName = "ShoppingAndBiddingWebApplication";
 
 	/*
 	$host = "mysql.hostinger.co.uk";

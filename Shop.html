@@ -10,15 +10,15 @@
     	<div class="menu">
 	    	<div class="menubarForMaxWidth876">
 	            <ul>
-	            	<li ><a href="#" onclick="showHideDropDown()">
+	            	<li ><a href="#" onclick="showHideDropDown('menubarDropDown')">
 	                    <img class="menubarIcon" src="img/menu.png">
 	                </a></li>
 
 	            	<li style="float: right;"><a href="#">เข้าสู่ระบบ</a></li>
-	                <li style="float: right;"><a href="#">
+	                <li style="float: right;"><a href="#" onclick="showHideDropDown('cartDropDown')">
 	                    <img class="menubarIcon" src="img/cart.png">
-	                    <div id="total" class="total">0</div>
-	                    ยืนยันการสั่งซื้อ
+	                    <div id="total1" class="total"></div>
+	                    รายการสั่งซื้อ
 	                </a></li>
 	            </ul>
 	        </div>
@@ -39,28 +39,24 @@
 	                <li><a href="#">เกี่ยวกับเรา</a></li>
 
 	                <li style="float: right;"><a href="#">เข้าสู่ระบบ</a></li>
-	                <li style="float: right;"><a href="#">
+	                <li style="float: right;"><a href="#" onclick="showHideDropDown('cartDropDown')">
 	                    <img class="menubarIcon" src="img/cart.png">
-	                    <div id="total" class="total">0</div>
-	                    ยืนยันการสั่งซื้อ
+	                    <div id="total2" class="total"></div>
+	                    รายการสั่งซื้อ
 	                </a></li>
 	            </ul>
+	        </div>
+
+	        <div id="cartDropDown" class="cartDropDown" style="visibility: hidden;">
+	            <li><a href="#" style="width: 180px;" onclick="showCartList()">ดูรายการสั่งซื้อ</a></li>
+	            <li><a href="#" style="width: 180px;" onclick="clearCookie()">ล้างรถเข็น</a></li>
 	        </div>
         </div>
 
         <div class="content">
             <center>
                 <br><br><br><br>
-                <div class="shopList">
-                    <center>
-                        <img class="shopImg" src="#">
-                        <center><div class="shopID">รหัสสินค้า 0001</div></center>
-                        <hr class="style-shop">
-                        <span title="ชื่อเต็ม"><div class="shopName">ชื่อที่ถูกจำกัด</div></span>
-                        <div class="shopPrice">XX,XXX.XX ฿</div>
-                        <input class="addtocart" type="button" value="หยิบใส่รถเข็น" onclick="addToCart('1')">
-                    </center>
-                </div>
+				<div id="ProductListTemplate"></div>
                 <br><br><br>
             </center>
         </div>
@@ -87,38 +83,193 @@
         </div>
 
         <script type="text/javascript">
-            function showHideDropDown()
-            {
-				if(document.getElementById('menubarDropDown').style.visibility == 'hidden')
+			loadProduct();
+			initialCookie();
+			
+			function loadProduct()
+			{
+				var xmlhttp = new XMLHttpRequest();
+				var url = "GetAllProduct.php";
+				xmlhttp.onreadystatechange=function()
 				{
-					document.getElementById('menubarDropDown').style.visibility = 'visible';
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+					{
+						displayResponseProduct(xmlhttp.responseText);
+					}
+				}
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
+			}
+			
+			function displayResponseProduct(response)
+			{
+				var arr = JSON.parse(response);
+				var i=0;
+				var out = " ";
+				var name = " ";
+				
+				for(i = 0 ; i < arr.length ; i++)
+				{
+					if(parseInt(arr[i]["Number Of Product In Stock"]) > 0)
+					{
+						out += "<div class='shopList'>";
+						out += "<center>";
+						out += "<img id='shopImg" + arr[i]["Product ID"] + "' class='shopImg' src='"+ arr[i]["Product Picture Directory"] +"'>";
+						out += "<center><div id='shopID" + arr[i]["Product ID"] + "' class='shopID'>รหัสสินค้า " + arr[i]["Product ID"] + "</div></center>";
+						out += "<hr class='style-shop'>";
+						name = (arr[i]["Product Name"].length > 12)? ((arr[i]["Product Name"].substring(0,9)) + "...") : arr[i]["Product Name"];
+						out += "<span title='" + arr[i]["Product Name"] + "'><div id='shopName" + arr[i]["Product ID"] + "' class='shopName'>" + name +"</div></span>";
+						out += "<div id='shopPrice" + arr[i]["Product ID"] + "' class='shopPrice'>" + commaFormatted(arr[i]["Current Product Price Per Unit"] + ".00") + " ฿</div>";
+						out += "<input id='shopAdd" + arr[i]["Product ID"] + "' class='addtocart' type='button' value='หยิบใส่รถเข็น' onclick='writeCookie(" + arr[i]["Product ID"] + ",1)'>";
+						out += "</center>";
+						out += "</div>";
+					}
+				}
+				document.getElementById("ProductListTemplate").innerHTML = out;
+			}
+			
+			// Reference: https://css-tricks.com/snippets/javascript/comma-values-in-numbers/
+			function commaFormatted(amount)
+			{
+				var delimiter = ","; // replace comma if desired
+				var a = amount.split('.',2)
+				var d = a[1];
+				var i = parseInt(a[0]);
+				if(isNaN(i))
+				{
+					return '';
+				}
+				var minus = '';
+				if(i < 0)
+				{
+					minus = '-';
+				}
+				i = Math.abs(i);
+				var n = new String(i);
+				var a = [];
+				while(n.length > 3)
+				{
+					var nn = n.substr(n.length-3);
+					a.unshift(nn);
+					n = n.substr(0,n.length-3);
+				}
+				if(n.length > 0)
+				{
+					a.unshift(n);
+				}
+				n = a.join(delimiter);
+				if(d.length < 1)
+				{
+					amount = n;
 				}
 				else
 				{
-					document.getElementById('menubarDropDown').style.visibility = 'hidden';
+					amount = n + '.' + d;
 				}
-            }
+				amount = minus + amount;
+				return amount;
+			}
 
-            function selectImg(index,sub)
-            {
-                document.getElementById('imgshop'+index).src = document.getElementById('imgshopsmall'+index+'_'+sub).src;
-            }
+			function initialCookie()
+			{
+				if(getCookie("count") == "")
+				{
+					document.cookie = "count=0;";
+				}
+				if(getCookie("total") == "")
+				{
+					document.cookie = "total=0;";
+					document.getElementById('total1').innerHTML = "0";
+					document.getElementById('total2').innerHTML = "0";
+				}
+				else
+				{
+					document.getElementById('total1').innerHTML = getCookie("total");
+					document.getElementById('total2').innerHTML = getCookie("total");
+				}
+			}
 
-            function addToCart(index)
-            {
-                var total = parseInt(document.getElementById('total').innerHTML);
-                var add = parseInt(document.getElementById('number'+index).value);
-                total += add;
-                document.getElementById('total').innerHTML = total;
-                document.getElementById('number'+index).value = 0;
-                document.getElementById('pricetotal'+index).innerHTML = 0;
-            }
+			function writeCookie(productID, quantity) 
+			{
+				var found = searchProductIDInCookie(productID);
+				
+				if(found == -1)
+				{
+					var new_count = parseInt(getCookie("count")) + 1;
+					document.cookie = "productID" + new_count + "=" + productID;
+					document.cookie = "quantity" + new_count + "=" + quantity;
+					document.cookie = "count" + "=" + new_count;
+				}
+				else{
+					var new_quantity = parseInt(getCookie("quantity"+found)) + quantity;
+					document.cookie = "quantity" + found + "=" + new_quantity;
+				}
+				var new_total = parseInt(getCookie("total")) + quantity;
+				document.cookie = "total=" + new_total;
+				document.getElementById('total1').innerHTML = new_total.toString();
+				document.getElementById('total2').innerHTML = new_total.toString();
+			}
+			
+			function searchProductIDInCookie(productID)
+			{				
+				for(var i = 1 ; i <= parseInt(getCookie("count")) ; i++)
+				{
+					if(parseInt(getCookie("productID" + i)) == productID )
+					{
+						return i;
+					}
+				}
+				return -1;
+			}
+			
+			function getCookie(cname)
+			{
+				var name = cname + "=";
+				var ca = document.cookie.split(';');
+				for(var i = 0 ; i < ca.length ; i++)
+				{
+					var c = ca[i];
+					while (c.charAt(0) == ' ')
+					{
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0)
+					{
+						return c.substring(name.length, c.length);
+					}
+				}
+				return "";
+			}
 
-            function calPrice(index)
+			function showCartList()
+			{
+				var show = "Product ID (Quantity)\n";
+				for(var i = 1 ; i <= parseInt(getCookie("count")) ; i++)
+				{
+					show += getCookie("productID" + i) + " (" + getCookie("quantity" + i) + ")\n";
+				}
+				show += "\n\n________________________________________________________________________________\n\n        หมายเหตุ: ในที่นี้ Implementation เฉพาะ addProductToCart Function ดังนั้นจึงตรวจสอบเพียงข้อมูลที่ถูก Add ใส่ใน Cart (Cookie)\n        โดยในการพัฒนาต่อจะต้องนำข้อมูล Product ID และ Quantity (ซึ่งเก็บใน Cookie) ไปแสดงในหน้ารายการสั่งซื้อ ซึ่งสามารถ เพิ่ม ลด และยืนยันการสั่งซื้อสินค้าได้";
+				alert(show);
+			}
+
+			function clearCookie()
+			{
+				document.cookie = "count=0;";
+				document.cookie = "total=0;";
+				document.getElementById('total1').innerHTML = "0";
+				document.getElementById('total2').innerHTML = "0";
+			}
+
+            function showHideDropDown(id)
             {
-                var price = parseInt(document.getElementById('price'+index).innerHTML);
-                var number = parseInt(document.getElementById('number'+index).value);
-                document.getElementById('pricetotal'+index).innerHTML = price * number;
+				if(document.getElementById(id).style.visibility == 'hidden')
+				{
+					document.getElementById(id).style.visibility = 'visible';
+				}
+				else
+				{
+					document.getElementById(id).style.visibility = 'hidden';
+				}
             }
         </script>
     </body>
