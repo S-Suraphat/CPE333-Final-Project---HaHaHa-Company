@@ -10,12 +10,12 @@
     	<div class="menu">
 	    	<div class="menubarForMaxWidth876">
 	            <ul>
-	            	<li ><a href="#" onclick="showHideDropDown('menubarDropDown')">
+	            	<li ><a id="clickMenubarDropDown" onclick="showHideDropDown('menubarDropDown')">
 	                    <img class="menubarIcon" src="img/menu.png">
 	                </a></li>
 
 	            	<li style="float: right;"><a href="#">เข้าสู่ระบบ</a></li>
-	                <li style="float: right;"><a href="#" onclick="showHideDropDown('cartDropDown')">
+	                <li style="float: right;"><a id="clickCartDropDown1" onclick="showHideDropDown('cartDropDown')">
 	                    <img class="menubarIcon" src="img/cart.png">
 	                    <div id="total1" class="total"></div>
 	                    รายการสั่งซื้อ
@@ -39,7 +39,7 @@
 	                <li><a href="#">เกี่ยวกับเรา</a></li>
 
 	                <li style="float: right;"><a href="#">เข้าสู่ระบบ</a></li>
-	                <li style="float: right;"><a href="#" onclick="showHideDropDown('cartDropDown')">
+	                <li style="float: right;"><a id="clickCartDropDown2" onclick="showHideDropDown('cartDropDown')">
 	                    <img class="menubarIcon" src="img/cart.png">
 	                    <div id="total2" class="total"></div>
 	                    รายการสั่งซื้อ
@@ -48,8 +48,8 @@
 	        </div>
 
 	        <div id="cartDropDown" class="cartDropDown" style="visibility: hidden;">
-	            <li><a href="#" style="width: 180px;" onclick="showCartList()">ดูรายการสั่งซื้อ</a></li>
-	            <li><a href="#" style="width: 180px;" onclick="clearCookie()">ล้างรถเข็น</a></li>
+	            <li><a id="clickShowCart" style="width: 180px;" onclick="showCartList()">ดูรายการสั่งซื้อ</a></li>
+	            <li><a id="clickClearCart" style="width: 180px;" onclick="clearCookie()">ล้างรถเข็น</a></li>
 	        </div>
         </div>
 
