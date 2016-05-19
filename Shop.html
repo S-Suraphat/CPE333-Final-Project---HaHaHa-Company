@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shopping</title>
+        <link rel="stylesheet" type="text/css" href="CSS.css">
+    </head>
+    <body>
+    	<div class="menu">
+	    	<div class="menubarForMaxWidth876">
+	            <ul>
+	            	<li ><a href="#" onclick="showHideDropDown()">
+	                    <img class="menubarIcon" src="img/menu.png">
+	                </a></li>
+
+	            	<li style="float: right;"><a href="#">เข้าสู่ระบบ</a></li>
+	                <li style="float: right;"><a href="#">
+	                    <img class="menubarIcon" src="img/cart.png">
+	                    <div id="total" class="total">0</div>
+	                    ยืนยันการสั่งซื้อ
+	                </a></li>
+	            </ul>
+	        </div>
+	        <div id="menubarDropDown" class="menubarDropDown" style="visibility: hidden;">
+	            <li><a href="#">หน้าแรก</a></li>
+	            <li><a href="#">วิธีการสั่งซื้อ</a></li>
+	            <li><a class="active" href="Shop.html">สั่งซื้อสินค้า</a></li>
+	            <li><a href="#">ตรวจสอบการสั่งซื้อ</a></li>
+	            <li><a href="#">เกี่ยวกับเรา</a></li>
+	        </div>
+
+	        <div class="menubarForMinWidth877">
+	            <ul>
+	                <li><a href="#">หน้าแรก</a></li>
+	                <li><a href="#">วิธีการสั่งซื้อ</a></li>
+	                <li><a class="active" href="Shop.html">สั่งซื้อสินค้า</a></li>
+	                <li><a href="#">ตรวจสอบการสั่งซื้อ</a></li>
+	                <li><a href="#">เกี่ยวกับเรา</a></li>
+
+	                <li style="float: right;"><a href="#">เข้าสู่ระบบ</a></li>
+	                <li style="float: right;"><a href="#">
+	                    <img class="menubarIcon" src="img/cart.png">
+	                    <div id="total" class="total">0</div>
+	                    ยืนยันการสั่งซื้อ
+	                </a></li>
+	            </ul>
+	        </div>
+        </div>
+
+        <div class="content">
+            <center>
+                <br><br><br><br>
+                <div class="shopList">
+                    <center>
+                        <img class="shopImg" src="#">
+                        <center><div class="shopID">รหัสสินค้า 0001</div></center>
+                        <hr class="style-shop">
+                        <span title="ชื่อเต็ม"><div class="shopName">ชื่อที่ถูกจำกัด</div></span>
+                        <div class="shopPrice">XX,XXX.XX ฿</div>
+                        <input class="addtocart" type="button" value="หยิบใส่รถเข็น" onclick="addToCart('1')">
+                    </center>
+                </div>
+                <br><br><br>
+            </center>
+        </div>
+
+        <div class="footer">
+            <center>
+                <div class="contact">
+                    <img class="icon" src="img/facebook.png">
+                    <br>Facebook
+                </div>
+                <div class="contact">
+                    <img class="icon" src="img/line.png">
+                    <br>Line ID
+                </div>
+                <div class="contact">
+                    <img class="icon" src="img/mobile.png">
+                    <br>(+66) XX-XXX-XXXX
+                </div>
+                <div class="contact">
+                    <img class="icon" src="img/mail.png">
+                    <br>E-mail
+                </div>
+            </center>
+        </div>
+
+        <script type="text/javascript">
+            function showHideDropDown()
+            {
+				if(document.getElementById('menubarDropDown').style.visibility == 'hidden')
+				{
+					document.getElementById('menubarDropDown').style.visibility = 'visible';
+				}
+				else
+				{
+					document.getElementById('menubarDropDown').style.visibility = 'hidden';
+				}
+            }
+
+            function selectImg(index,sub)
+            {
+                document.getElementById('imgshop'+index).src = document.getElementById('imgshopsmall'+index+'_'+sub).src;
+            }
+
+            function addToCart(index)
+            {
+                var total = parseInt(document.getElementById('total').innerHTML);
+                var add = parseInt(document.getElementById('number'+index).value);
+                total += add;
+                document.getElementById('total').innerHTML = total;
+                document.getElementById('number'+index).value = 0;
+                document.getElementById('pricetotal'+index).innerHTML = 0;
+            }
+
+            function calPrice(index)
+            {
+                var price = parseInt(document.getElementById('price'+index).innerHTML);
+                var number = parseInt(document.getElementById('number'+index).value);
+                document.getElementById('pricetotal'+index).innerHTML = price * number;
+            }
+        </script>
+    </body>
+</html>

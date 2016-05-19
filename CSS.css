@@ -1,0 +1,228 @@
+@font-face {
+    font-family: 'bangna-new';
+    src: url('bangna-new.ttf');
+}
+
+html {
+    font-family: "bangna-new";
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+h1 {
+    font-size: 50pt;
+    font-weight: lighter;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.menu {
+
+}
+
+@media screen and (max-width: 876px) {
+    .menubarForMinWidth877 {
+        display: none;
+    }
+
+    .menubarForMaxWidth876 ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(51,51,51,0.9);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .menubarDropDown {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(51,51,51,0.9);
+        position: fixed;
+        top: 55px;
+        width: 100%;
+        z-index: 1000;
+        overflow: hidden;
+    }
+}
+
+@media screen and (min-width: 877px) {
+    .menubarForMaxWidth876 {
+        display: none;
+    }
+
+    .menubarDropDown {
+        display: none;
+    }
+
+    .menubarForMinWidth877 ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(51,51,51,0.9);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+
+.active {
+    background-color: #0099cc;
+}
+
+.menubarIcon {
+    width: 20px;
+    vertical-align: middle;
+    margin-top: -5px;
+}
+
+.total {
+    display: inline-block;
+    background-color: #FF9800;
+    width: 27px;
+    border-radius: 13.5px;
+}
+
+.content {
+    width: 100%;
+    padding: 15px;
+    color: #ffffff;
+    background-size: 100%;
+    font-size: 8pt;
+}
+
+.shopList {
+    width: 222px;
+    height: 355px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16pt;
+    border: thin;
+    border-color: #ffffff;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: #d9d9d9;
+    padding: 5px;
+    padding-top: 15px;
+    vertical-align: top;
+    margin: 30px;
+}
+
+.shopImg {
+    margin: 5px;
+    width: 194px;
+    height: 194px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: #f2f2f2;
+}
+
+.shopID {
+    margin: 0px;
+    width: 194px;
+    color: #7f7f7f;
+    font-size: 6pt;
+    font-weight: 500;
+    text-align: left;
+}
+
+hr.style-shop {
+    border: 0;
+    height: 0;
+    margin: 0px;
+    border-top: 1px solid rgba(127, 127, 127, 0.2);
+}
+
+.shopName {
+    margin: 0px;
+    width: 194px;
+    color: #7f7f7f;
+    font-size: 18pt;
+    font-weight: 800;
+}
+
+.shopPrice {
+    margin: 0px;
+    width: 194px;
+    color: #7f7f7f;
+    font-size: 12pt;
+    font-weight: 800;
+}
+
+.addtocart {
+    font-family: "bangna-new";
+    color: #ffffff;
+    outline: none;
+    text-align: center;
+    border-style: none;
+    width: 204px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #7f7f7f;
+    margin: 0px;
+}
+
+.addtocart:hover {
+    background-color: #FF9800;
+}
+
+.footer {
+    background-color: #0099cc;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    padding: 15px;
+    width: 100%;
+}
+
+.contact {
+    width: 150px;
+    text-align: center;
+    display: inline-block;
+}
+
+.icon {
+    width: 40px;
+    margin-left: 2.5%;
+}
