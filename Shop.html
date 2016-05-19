@@ -51,16 +51,19 @@
         <div class="content">
             <center>
                 <br><br><br><br>
-                <div class="shopList">
+				<div id="ProductListTemplate">
+				</div>
+				
+                <!--<div class="shopList">
                     <center>
                         <img class="shopImg" src="#">
                         <center><div class="shopID">รหัสสินค้า 0001</div></center>
                         <hr class="style-shop">
                         <span title="ชื่อเต็ม"><div class="shopName">ชื่อที่ถูกจำกัด</div></span>
                         <div class="shopPrice">XX,XXX.XX ฿</div>
-                        <input class="addtocart" type="button" value="หยิบใส่รถเข็น" onclick="addToCart('1')">
+                        <input class="addtocart" type="button" value="หยิบใส่รถเข็น" onclick="writeCookie(name,value,days)">
                     </center>
-                </div>
+                </div>-->
                 <br><br><br>
             </center>
         </div>
@@ -87,6 +90,96 @@
         </div>
 
         <script type="text/javascript">
+			loadProduct();
+			document.cookie = "count=0;";
+			
+			alert(document.cookie);
+			
+			function writeCookie(productID,quantity) 
+			{
+				var found = searchProductID(productID);
+				
+				
+				if(found == -1)
+				{
+					var new_count = parseInt(getCookie("count")) + 1;
+					document.cookie = "productID" + new_count + "=" + productID;
+					document.cookie = "quantity" + new_count + "=" + quantity;
+					document.cookie = "count" + "=" + new_count;
+				}
+				else{
+					var new_quantity = parseInt(getCookie("quantity"+found)) + quantity;
+					document.cookie = "quantity" + found + "=" + new_quantity ;
+				}
+				alert(document.cookie);
+			}
+			
+			function searchProductID(productID)
+			{
+				var i = 1;
+				
+				for(i=1;i<=parseInt(getCookie("count"));i++)
+				{
+					if(parseInt(getCookie("productID"+i)) == productID )
+						return i;
+				}
+				return -1;
+			}
+			
+			function getCookie(cname) {
+				var name = cname + "=";
+				var ca = document.cookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length,c.length);
+					}
+				}
+				return "";
+			}
+		
+			function loadProduct()
+			{
+				var xmlhttp = new XMLHttpRequest();
+				var url = "GetAllProduct.php";
+				xmlhttp.onreadystatechange=function()
+				{
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+					{
+						//alert(xmlhttp.responseText);
+						displayResponseProduct(xmlhttp.responseText);
+					}
+				}
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
+			}
+			
+			function displayResponseProduct(response)
+			{
+				var arr = JSON.parse(response);
+				var i=0;
+				var out = " ";
+				
+				
+				for(i = 0; i < arr.length; i++)
+				{
+					out += "<div class='shopList'>";
+					out += "<center>";
+					out += "<img class='shopImg' src='"+ arr[i]["Product Picture Directory"] +"'>";
+					out += "<center><div class='shopID'>รหัสสินค้า " + arr[i]["Product ID"] + "</div></center>";
+					out += "<hr class='style-shop'>";
+					out += "<span title='" + arr[i]["Product Name"] + "'><div class='shopName'>"+ arr[i]["Product Name"].substring(0,12) +"</div></span>";
+					out += "<div class='shopPrice'>" + arr[i]["Current Product Price Per Unit"] + " ฿</div>";
+					out += "<input class='addtocart' type='button' value='หยิบใส่รถเข็น' onclick='writeCookie("+arr[i]["Product ID"]+",1)'>";
+					out += "</center>";
+					out += "</div>";
+				}
+				document.getElementById("ProductListTemplate").innerHTML = out;
+			}
+			
             function showHideDropDown()
             {
 				if(document.getElementById('menubarDropDown').style.visibility == 'hidden')

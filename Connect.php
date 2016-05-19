@@ -5,7 +5,7 @@
 	$host = "localhost";
 	$username = "root";
 	$password = "";
-	$databaseName = "Product-1";
+	$databaseName = "ShoppingAndBiddingWebApplication";
 
 	/*
 	$host = "mysql.hostinger.co.uk";

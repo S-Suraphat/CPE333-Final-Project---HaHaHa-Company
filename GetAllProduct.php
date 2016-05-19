@@ -23,12 +23,12 @@
 			    $out .= '{"Product ID":"' . $rs["Product ID"] . '",';
 				$out .= '"Product Name":"' . $rs["Product Name"] . '",';
 				$out .= '"Product Cost Per Unit":"' . $rs["Product Cost Per Unit"] . '",';
-				$out .= '"Current Product Price Per Unite":"' . $rs["Current Product Price Per Unit"] . '",';
+				$out .= '"Current Product Price Per Unit":"' . $rs["Current Product Price Per Unit"] . '",';
 				$out .= '"Number Of Product In Stock":"' . $rs["Number Of Product In Stock"] . '",';
 				$out .= '"Product Status":"' . $rs["Product Status"] . '",';
-				$out .= '"Product Detail":"' . $rs["Product Detail"] . '",';
+				//$out .= '"Product Detail":"' . $rs["Product Detail"] . '",';
 				$out .= '"Product Picture Directory":"' . $rs["Product Picture Directory"] . '",';
-				$out .= '"Product Catalog ID":"' . $rs["Product Catalog ID"] . '",';
+				$out .= '"Product Catalog ID":"' . $rs["Product Catalog ID"] . '"}';
 			}
 			$out .= "]";
 			echo $out;
