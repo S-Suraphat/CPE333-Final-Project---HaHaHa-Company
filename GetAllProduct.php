@@ -1,18 +1,21 @@
 <?php
 	include("Connect.php");
 
+	// Connect to database
 	$con = @mysqli_connect($host, $username, $password, $databaseName);
 
 	if (mysqli_connect_errno())
 	{
-		echo "-1"; //cannot connect database
+		echo "-1"; // Cannot connect to database
 	}
 	else
 	{
+		// Successfully connect to database and ready to query all product
 		$sql = "SELECT * FROM product";
 		$result = @mysqli_query($con, $sql);
 		if ($result)
 		{
+			// Successfully query all product and ready to fetch result and form to JSON array
 			$out = "[";
 			while($rs = $result->fetch_array(MYSQLI_ASSOC))
 			{
@@ -31,12 +34,12 @@
 				$out .= '"Product Catalog ID":"' . $rs["Product Catalog ID"] . '"}';
 			}
 			$out .= "]";
-			echo $out;
+			echo $out; // Show JAON array result
 		}
 		else
 		{
-			echo "0"; //cannot query
+			echo "0"; // Cannot query
 		}
-		mysqli_close($con);		
+		mysqli_close($con);	 // Close connention	
 	}
 ?>

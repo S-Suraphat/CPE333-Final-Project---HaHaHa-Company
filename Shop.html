@@ -7,7 +7,9 @@
         <link rel="stylesheet" type="text/css" href="CSS.css">
     </head>
     <body>
+    	<!-- Menu GUI -->
     	<div class="menu">
+    		<!-- Menu GUI for Device Width <= 876px -->
 	    	<div class="menubarForMaxWidth876">
 	            <ul>
 	            	<li ><a id="clickMenubarDropDown" onclick="showHideDropDown('menubarDropDown')">
@@ -22,6 +24,7 @@
 	                </a></li>
 	            </ul>
 	        </div>
+	        <!-- Menu Dropdown GUI for Device Width <= 876px -->
 	        <div id="menubarDropDown" class="menubarDropDown" style="visibility: hidden;">
 	            <li><a href="#">หน้าแรก</a></li>
 	            <li><a href="#">วิธีการสั่งซื้อ</a></li>
@@ -30,6 +33,7 @@
 	            <li><a href="#">เกี่ยวกับเรา</a></li>
 	        </div>
 
+	        <!-- Menu GUI for Device Width >= 877px -->
 	        <div class="menubarForMinWidth877">
 	            <ul>
 	                <li><a href="#">หน้าแรก</a></li>
@@ -47,12 +51,14 @@
 	            </ul>
 	        </div>
 
+	        <!-- Cart Dropdown GUI -->
 	        <div id="cartDropDown" class="cartDropDown" style="visibility: hidden;">
 	            <li><a id="clickShowCart" style="width: 180px;" onclick="showCartList()">ดูรายการสั่งซื้อ</a></li>
 	            <li><a id="clickClearCart" style="width: 180px;" onclick="clearCookie()">ล้างรถเข็น</a></li>
 	        </div>
         </div>
 
+        <!-- Content GUI : Show Product List -->
         <div class="content">
             <center>
                 <br><br><br><br>
@@ -61,6 +67,7 @@
             </center>
         </div>
 
+        <!-- Footer GUI -->
         <div class="footer">
             <center>
                 <div class="contact">
@@ -82,10 +89,12 @@
             </center>
         </div>
 
+        <!-- Part of Javascript -->
         <script type="text/javascript">
-			loadProduct();
-			initialCookie();
+			loadProduct(); // Load Product List from Database by Call GetAllProduct.php Service
+			initialCookie(); // Initial Cookie for Cart Data (When Open This page)
 			
+			// Load Product List from Database by Call GetAllProduct.php Service
 			function loadProduct()
 			{
 				var xmlhttp = new XMLHttpRequest();
@@ -94,6 +103,7 @@
 				{
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 					{
+						// Map JSON Array Data to GUI
 						displayResponseProduct(xmlhttp.responseText);
 					}
 				}
@@ -101,6 +111,7 @@
 				xmlhttp.send();
 			}
 			
+			// Map JSON Array Data to GUI
 			function displayResponseProduct(response)
 			{
 				var arr = JSON.parse(response);
@@ -108,18 +119,25 @@
 				var out = " ";
 				var name = " ";
 				
+				// Loop: Map Product Data to Product Card List
 				for(i = 0 ; i < arr.length ; i++)
 				{
 					if(parseInt(arr[i]["Number Of Product In Stock"]) > 0)
 					{
 						out += "<div class='shopList'>";
 						out += "<center>";
+						// Contain Product Image to Product Card
 						out += "<img id='shopImg" + arr[i]["Product ID"] + "' class='shopImg' src='"+ arr[i]["Product Picture Directory"] +"'>";
+						// Contain Product ID to Product Card
 						out += "<center><div id='shopID" + arr[i]["Product ID"] + "' class='shopID'>รหัสสินค้า " + arr[i]["Product ID"] + "</div></center>";
 						out += "<hr class='style-shop'>";
+						// Product Name Abbreviation for containing to Product Card
 						name = (arr[i]["Product Name"].length > 12)? ((arr[i]["Product Name"].substring(0,9)) + "...") : arr[i]["Product Name"];
+						// Contain Product Name to Product Card
 						out += "<span title='" + arr[i]["Product Name"] + "'><div id='shopName" + arr[i]["Product ID"] + "' class='shopName'>" + name +"</div></span>";
+						// Contain Product Price to Product Card
 						out += "<div id='shopPrice" + arr[i]["Product ID"] + "' class='shopPrice'>" + commaFormatted(arr[i]["Current Product Price Per Unit"] + ".00") + " ฿</div>";
+						// Button for Adding 1-Unit Product to Cart  
 						out += "<input id='shopAdd" + arr[i]["Product ID"] + "' class='addtocart' type='button' value='หยิบใส่รถเข็น' onclick='writeCookie(" + arr[i]["Product ID"] + ",1)'>";
 						out += "</center>";
 						out += "</div>";
@@ -128,6 +146,7 @@
 				document.getElementById("ProductListTemplate").innerHTML = out;
 			}
 			
+			// Currency Formatting
 			// Reference: https://css-tricks.com/snippets/javascript/comma-values-in-numbers/
 			function commaFormatted(amount)
 			{
@@ -170,58 +189,70 @@
 				return amount;
 			}
 
+			// Initial Cookie for Cart Data
 			function initialCookie()
 			{
-				if(getCookie("count") == "")
+				// Set Count (# of Type Product)
+				if(getCookie("count") == "") // Never Opened This Page
 				{
 					document.cookie = "count=0;";
 				}
-				if(getCookie("total") == "")
+				// Set Total (Summation of Quantity Of All Product)
+				if(getCookie("total") == "") // Never Opened This Page
 				{
 					document.cookie = "total=0;";
 					document.getElementById('total1').innerHTML = "0";
 					document.getElementById('total2').innerHTML = "0";
 				}
-				else
+				else // Opened This Page
 				{
 					document.getElementById('total1').innerHTML = getCookie("total");
 					document.getElementById('total2').innerHTML = getCookie("total");
 				}
 			}
 
+			// ***Focus On This Function*** addProductToCart by Write Data to Cookie
 			function writeCookie(productID, quantity) 
 			{
+				// Does Cookie Have This Product?
 				var found = searchProductIDInCookie(productID);
 				
-				if(found == -1)
+				if(found == -1) // Not Found that This Product was in Cookie
 				{
+					// Add This Product as New Product in Cart (Cookie)
 					var new_count = parseInt(getCookie("count")) + 1;
 					document.cookie = "productID" + new_count + "=" + productID;
 					document.cookie = "quantity" + new_count + "=" + quantity;
 					document.cookie = "count" + "=" + new_count;
 				}
-				else{
+				else // Found that This Product was in Cookie
+				{
+					// Only Update Quantity 
 					var new_quantity = parseInt(getCookie("quantity"+found)) + quantity;
 					document.cookie = "quantity" + found + "=" + new_quantity;
 				}
+				// Update Total Quantity
 				var new_total = parseInt(getCookie("total")) + quantity;
 				document.cookie = "total=" + new_total;
 				document.getElementById('total1').innerHTML = new_total.toString();
 				document.getElementById('total2').innerHTML = new_total.toString();
 			}
 			
+			// Search Product ID in Cookie
 			function searchProductIDInCookie(productID)
 			{				
 				for(var i = 1 ; i <= parseInt(getCookie("count")) ; i++)
 				{
 					if(parseInt(getCookie("productID" + i)) == productID )
 					{
-						return i;
+						return i; // Found and Return Index
 					}
 				}
-				return -1;
+				return -1; // Not Found and Return -1
 			}
 			
+			// Get Cookie by Key Value
+			// Reference: http://www.w3schools.com/js/js_cookies.asp
 			function getCookie(cname)
 			{
 				var name = cname + "=";
@@ -241,6 +272,7 @@
 				return "";
 			}
 
+			// Show Cart Data on Popup (Alert by Javascript)
 			function showCartList()
 			{
 				var show = "Product ID (Quantity)\n";
@@ -252,6 +284,7 @@
 				alert(show);
 			}
 
+			// Clear Cookie (Clear Cart)
 			function clearCookie()
 			{
 				document.cookie = "count=0;";
@@ -260,6 +293,7 @@
 				document.getElementById('total2').innerHTML = "0";
 			}
 
+			// Dropdown Controlling
             function showHideDropDown(id)
             {
 				if(document.getElementById(id).style.visibility == 'hidden')
